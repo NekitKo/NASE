@@ -5,4 +5,4 @@ libqt5serialport5-dev build-essential
 WORKDIR /app
 COPY . /app
 RUN cmake
-CMD ["./server"]
+ENTRYPOINT [./app/server]
