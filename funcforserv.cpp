@@ -76,9 +76,9 @@ QByteArray rege(const QString& email, const QString& role, const QString& passwo
     Database::getInstance()->execQuery(query);  
     QString s = Database::getInstance()->execQuery("SELECT * from users where mail = \"" + email+"\"");
     if (s.size()>0) {
-        return "User successfully inserted";
+        return "rege+";
     } else {
-        return "User not successfully inserted because user already exists";
+        return "rege-";
     }
 }
 
@@ -86,11 +86,11 @@ QByteArray auth(const QString& email,const QString& password){
     QString query = QString("SELECT * FROM users WHERE mail = \"" + email+"\"");
     qDebug()<<query;
     if (Database::getInstance()->execQuery(query).size()>0){  // Если найдено больше нуля записей с заданным именем пользователя,
-        return "User exists in database.";
+        return "auth+";
         Database::getInstance()->execQuery("UPDATE users SET in_sys = 1 WHERE mail = \"" + email+"\"");
     }
     else                                                                     // Иначе пользователь с заданным именем не найден в базе данных.
-        return "Incorrect password or email ";
+        return "auth- ";
 }
 
 QString stat(const QString& email){
@@ -102,7 +102,7 @@ QString stat(const QString& email){
         return response;
     }
     else                                                               
-        return "Error";
+        return "stat-";
 }
 
 QByteArray task1(const QString& email){
