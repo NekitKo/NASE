@@ -2,8 +2,9 @@
 
 const int maxn = 4; // максимальное количество вершин в графе
 
-QVector<int> graph[maxn*(maxn-1)]; // список смежности графа
+QVector<int> graph[maxn]; // список смежности графа
 bool adjacencyMatrix[maxn][maxn]; // матрица смежности графа
+QString matrix1;
 
 QByteArray parse(QString str){
     QStringList params = str.split("|");   //формат msg: function|params0|params1... auth email password
@@ -68,6 +69,14 @@ QByteArray parse(QString str){
 
            return checktask3(mail,variant,answer);
         }
+    else if (params[0] == "checktask4"){
+
+            QString mail=params[1];
+            QString variant=params[2];
+            QString answer=params[3];
+
+               return checktask4(mail,variant,answer);
+            }
    else{
              return "Invalid function name";
    }
@@ -132,8 +141,14 @@ QByteArray task1(const QString& email){
         }
     }
 
+    // выводим список вершин и ребер на экран
+    //answer.append( "Vertices list: " + '\n');
+    //for (int i = 0; i < n; i++) {
+    //    answer.append( QString::number(i) + " ");
+    //}
+    //answer.append("\n");
 
-
+    //answer.append( "Edges list: " + '\n');
     int k = 0;
     for (auto i:edges) {
         if(k==m){
@@ -156,6 +171,14 @@ QByteArray task1(const QString& email){
         }
     }
 
+    //answer.append("||");
+    //выводим матрицу смежности на экран
+    //cout << "Adjacency matrix: " << endl;
+    //for (int i = 0; i < n; i++) {
+    //    for (int j = 0; j < n; j++) {
+    //        qDebug()<<(QString::number(adjacencyMatrix[i][j]) + " ");
+    //    }
+    //}
     QString matrix;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -454,18 +477,10 @@ QByteArray get_task3(){
     return answer.toUtf8();
 
 }
-/*!
- * \brief 4 Задание
- * \param Функция принимает QString e-mail
- * \return Фукнция возвращает QString результат выполнения задания
- */
-QByteArray task4(const QString& email){
-     return "task4";
-}
+
 
 QByteArray checktask2(const QString& email,const QString& variant,const QString& answer){
-//variant = "n|m|1 2;1 3;4 5;3 2";
-//answer = 1 0 1 1 -1
+
     std::random_device rd;
     std::mt19937 gen(rd());
     QStringList var = variant.split("/");
@@ -568,4 +583,130 @@ QByteArray checktask1(const QString& email,const QString& variant,const QString&
 QByteArray task3(const QString& email){
      return "task3";
 };
+/*!
+ * \brief 4 Задание
+ * \param Функция принимает QString e-mail
+ * \return Фукнция возвращает QString результат выполнения задания
+ */
+QByteArray task4(const QString& email){
+    QString answer;
+    // Задаем случайное количество вершин и ребер
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> vertexDis(4, 7); // от 2 до 10 вершин
+    std::uniform_int_distribution<> edgeDis(4, (vertexDis(gen) * (vertexDis(gen) - 1)) / 2); // от 1 до n*(n-1)/2 ребер
+    int n = vertexDis(gen); // количество вершин
+    int m = edgeDis(gen); // количество ребер
+//    answer.append(QString::number(n)+"/");
+//    answer.append(QString::number(m)+"/");
+    // Создаем список вершин
+    QVector<int> vertices(n);
+    for (int i = 0; i < n; i++) {
+        vertices[i] = i + 1;
+
+    }
+    // Создаем список ребер
+
+    QVector<std::pair<int, int>> edges;{
+
+        for (int i = 0; i < m; i++) {
+            for (int j = i + 1; j < n; j++)
+            {
+                edges.push_back(std::make_pair(i, j));
+            }
+        }
+    }
+    // Создаем матрицу смежности
+    QVector<QVector<int>> adjacencyMatrix(n, QVector<int>(n, 0));
+    for (int i = 0; i < n; i++) {
+        for (int j =0 ; j < n; j++) {
+             adjacencyMatrix[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < m; i++) {
+            int startVertex = edges[i].first;
+            int endVertex = edges[i].second;
+            //int startVertexIndex = startVertex ;
+            //int endVertexIndex = endVertex ;
+             adjacencyMatrix[startVertex][endVertex] = 1;
+             adjacencyMatrix[endVertex][startVertex] = 1;
+
+    }
+
+    // Создаем матрицу инцидентности и заполняем ее нулями
+    QVector<QVector<int>> incidenceMatrix(n, QVector<int>(m, 0));
+
+    // Заполняем матрицу инцидентности
+    for (int i = 0; i < m; i++) {
+        int startVertex = edges[i].first;
+        int endVertex = edges[i].second;
+        int startVertexIndex = startVertex ;
+        int endVertexIndex = endVertex ;
+        incidenceMatrix[startVertexIndex][i] = 1;
+        incidenceMatrix[endVertexIndex][i] = -1;
+    }
+    QString rebra;
+        rebra.append(QString::number(n)+"/");
+        rebra.append(QString::number(m)+"/");
+    int k = 0;
+    for (auto i:edges) {
+        if(k==m){
+            break;
+        }
+        rebra.append(QString::number(i.first) + "-" + QString::number(i.second) + ";");
+        k+=1;
+    }
+    qDebug() << rebra;
+    // Выводим матрицу инцидентности в консоль
+QString matrix;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            matrix.append(QString::number(incidenceMatrix[i][j]) + " ");
+        }
+           matrix.remove(matrix1.size()-1,1);
+         matrix.append("/");
+
+    }
+    qDebug() <<"инциндетности";
+    qDebug() << matrix;
+    // Выводим матрицу смежности в консоль
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix1.append(QString::number(adjacencyMatrix[i][j]) + " ");
+        }
+        matrix1.remove(matrix1.size()-1,1);
+        matrix1.append("/");
+
+    }
+    qDebug() <<"смежности";
+    qDebug() << matrix1;
+
+
+    // Выводим матрицу инцидентности в ответ
+      for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+                answer.append(QString::number(incidenceMatrix[i][j]) + " ");
+            }
+            answer.remove(matrix1.size()-1,1);
+             answer.append("/");
+         }
+
+    return answer.toUtf8();
+
+
+}
+
+QByteArray checktask4(const QString &email, const QString &variant, const QString &answer)
+{
+        qDebug() << matrix1;
+        qDebug() << answer;
+       if (matrix1 == answer){
+           return "Правильно";
+       }
+       else{
+           return "Неправильно";
+       }
+     }
+
 

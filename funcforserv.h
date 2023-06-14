@@ -40,3 +40,4 @@ QByteArray checktask1(const QString& email,const QString& variant,const QString&
 QByteArray get_task3();
 
 QByteArray checktask2(const QString& email,const QString& variant,const QString& answer);
+QByteArray checktask4(const QString& email, const QString& variant, const QString& answer);
