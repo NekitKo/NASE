@@ -1,7 +1,7 @@
 QT -= gui
 
 QT += network #Для работы с сетью
-QT += sql  # для работы с бд (подключение блока SQL)
+QT += sql # для работы с бд (подключение блока SQL)
 
 CONFIG += c++11 console
 CONFIG -= app_bundle

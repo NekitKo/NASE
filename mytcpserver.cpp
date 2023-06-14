@@ -1,6 +1,4 @@
 #include "mytcpserver.h"
-#include <QDebug>
-#include <QCoreApplication>
 
 MyTcpServer::~MyTcpServer()
 {
@@ -51,7 +49,7 @@ void MyTcpServer::slotServerRead()
     }
     array="";
     array.append(str.toUtf8());
-    QString task = array.left(str.size() - 2);
+    QString task = array.left(str.size());
     qDebug()<<task;
     QByteArray a;
     a = parse(task);

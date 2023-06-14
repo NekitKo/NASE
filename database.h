@@ -4,6 +4,7 @@
 #include <QSqlRecord>
 #include <QDebug>
 #include <QSqlDatabase>
+#include <QtSql>
 
 class Database;
 

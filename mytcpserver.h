@@ -9,7 +9,7 @@
 #include <QDebug> //вывод в консоль
 #include <QMap>
 #include <QCoreApplication>
-#include <funcforserv.h>
+#include "funcforserv.h"
 class MyTcpServer : public QObject
 {
     Q_OBJECT //где-то в аду есть define, по которому понятно, что это такое, и с чем это едят

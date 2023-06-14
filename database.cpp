@@ -1,6 +1,4 @@
 #include "database.h"
-#include <QSqlDatabase>
-#include <QtSql>
 
 DatabaseDestroyer::~DatabaseDestroyer(){
     delete p_instance;
@@ -12,7 +10,7 @@ void DatabaseDestroyer::initial(QSqlDatabase* p){
 
 Database::Database(){
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("database/DB_for_server.db");
+    db.setDatabaseName("C:/Users/Сергей/Desktop/NASE-main/database/DB_for_server.db"); //указать полный путь
     if (!db.open()) {
         qDebug() << "Failed to open database connection.";
     }
