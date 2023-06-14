@@ -38,6 +38,12 @@ void Task_solution::change_task(QString task)
 
        ui->text->setText(otvet);
     }
+    if(task == "Task №4")
+    {
+       otvet = SingClient::getInstance()->send_To_server("task4|email");
+
+       ui->text->setText(otvet);
+    }
 
 
     //посмотреть номер задания и измниеть ui->text соответствено с текстом задания
@@ -87,6 +93,15 @@ void Task_solution::on_send_Button_clicked()
         qDebug() << ugol;
         qDebug() << otvet;
     }
+    if (txt == "task4")
+    {
+        QString ugol;
+        ugol = ui->lineEdit->text();
+        otvet = SingClient::getInstance()->send_To_server(QString("checktask4") + QString("|") +QString("email")+ QString("|") + "123" +QString("|")+ ugol);
+        ui->text->setText(otvet);
+        qDebug() << ugol;
+        qDebug() << otvet;
+    }
     //this->close();
 }
 
@@ -94,6 +109,8 @@ void Task_solution::on_send_Button_clicked()
 void Task_solution::on_back_Button_clicked()
 {
     emit back("*");
+    ui->lineEdit->clear();
+    ui->text->clear();
     this->close();
     qDebug("pushed back");
 }
